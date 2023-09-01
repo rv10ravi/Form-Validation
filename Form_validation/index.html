@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Form</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        input[type="text"],
+        input[type="email"],
+        input[type="password"] {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .error {
+            color: red;
+            margin-left: 5px;
+        }
+
+        .checked {
+            color: green;
+        }
+
+        
+
+    </style>
+</head>
+
+<body class="container" style="display: flex; align-items:center ">
+
+    <div class="col-md-6 mx-auto">
+        <div class="form-container" style="width: 80%;margin-top:10%">
+            <form id="registration-form">
+                <div class="form-group">
+                    <label for="full-name">Full Name:</label>
+                    <input type="text" id="full-name" name="full-name" class="form-control">
+                    <span class="error" id="full-name-error"></span>
+                    <br>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email Address:</label>
+                    <input type="email" id="email" name="email" class="form-control">
+                    <span class="error" id="email-error"></span>
+                    <br>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password" class="form-control">
+                    <span class="error" id="password-error"></span>
+                    <br>
+                </div>
+                <div class="form-group">
+                    <label for="confirm-password">Confirm Password:</label>
+                    <input type="password" id="confirm-password" name="confirm-password" class="form-control">
+                    <span class="error" id="confirm-password-error"></span>
+                    <br>
+                </div>
+                <div class="form-group">
+                    <label for="dob">Date of Birth:</label>
+                    <input type="text" id="dob" name="dob" placeholder="YYYY-MM-DD" class="form-control">
+                    <span class="error" id="dob-error"></span>
+                    <br>
+                </div>
+                <input type="submit" value="Submit">
+            </form>
+
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+
+        const form = document.getElementById('registration-form');
+        const fullName = document.getElementById('full-name');
+        const fullNameError = document.getElementById('full-name-error');
+        const email = document.getElementById('email');
+        const emailError = document.getElementById('email-error');
+        const password = document.getElementById('password');
+        const passwordError = document.getElementById('password-error');
+        const confirmPassword = document.getElementById('confirm-password');
+        const confirmPasswordError = document.getElementById('confirm-password-error');
+        const dob = document.getElementById('dob');
+        const dobError = document.getElementById('dob-error');
+        
+         // Function to check if a string contains only letters and spaces
+        function isAlpha(str) {
+            return /^[a-zA-Z\s]+$/.test(str);
+        }
+        
+        // Function to validate a date in "YYYY-MM-DD" format
+        function isValidDate(str) {
+            const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+            if (!dateRegex.test(str)) return false;
+
+            const date = new Date(str);
+            if (!date.getTime()) return false;
+
+            return date.toISOString().slice(0, 10) === str;
+        }
+
+        // Function to calculate age based on date of birth
+        function calculateAge(dob) {
+            const diffMs = Date.now() - dob.getTime();
+            const ageDt = new Date(diffMs);
+
+            return Math.abs(ageDt.getUTCFullYear() - 1970);
+        }
+        // Event listener for Full Name input
+        fullName.addEventListener('input', () => {
+            if (fullName.value.length >= 3 && isAlpha(fullName.value)) {
+                fullName.classList.add('border', 'border-success');
+                fullName.classList.remove('border', 'border-danger');
+                fullNameError.classList.add('checked')
+                fullNameError.classList.remove('error')
+                fullNameError.textContent = '✓';
+            } else {
+                fullName.classList.add('border', 'border-danger');
+                fullName.classList.remove('border', 'border-success');
+                fullNameError.classList.add('error')
+
+                fullNameError.textContent = '❌';
+            }
+        });
+         // Event listener for Email input
+        email.addEventListener('input', () => {
+            if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email.value)) {
+                email.classList.add('border', 'border-success');
+                email.classList.remove('border', 'border-danger');
+                emailError.classList.add('checked')
+                emailError.classList.remove('error')
+                emailError.textContent = '✓';
+            } else {
+                email.classList.add('border', 'border-danger');
+                email.classList.remove('border', 'border-success');
+                emailError.classList.add('error')
+
+                emailError.textContent = '❌';
+            }
+        });
+        // Event listener for Password input
+        password.addEventListener('input', () => {
+            if (password.value.length >= 8 && /\d/.test(password.value) && /[a-zA-Z]/.test(password.value)) {
+                password.classList.add('border', 'border-success');
+                password.classList.remove('border', 'border-danger');
+                passwordError.classList.remove('error')
+                passwordError.classList.add('checked')
+                passwordError.textContent = '✓';
+            }
+            else {
+                password.classList.add('border', 'border-danger');
+                password.classList.remove('border', 'border-success');
+                passwordError.classList.add('error')
+
+                passwordError.textContent = '❌';
+            }
+        });
+         // Event listener for Confirm Password input
+        confirmPassword.addEventListener('input', () => {
+            if (confirmPassword.value === password.value) {
+                confirmPassword.classList.add('border', 'border-success');
+                confirmPassword.classList.remove('border', 'border-danger');
+                confirmPasswordError.classList.add('checked')
+                confirmPasswordError.classList.remove('error')
+                confirmPasswordError.textContent = '✓';
+            }
+            else {
+                confirmPassword.classList.add('border', 'border-danger');
+                confirmPassword.classList.remove('border', 'border-success');
+                confirmPasswordError.classList.add('error')
+
+                confirmPasswordError.textContent = '❌';
+            }
+        });
+        // Event listener for Confirm Password input
+        dob.addEventListener('input', () => {
+            if (isValidDate(dob.value) && calculateAge(new Date(dob.value)) >= 18) {
+                dob.classList.add('border', 'border-success');
+                dob.classList.remove('border', 'border-danger');
+                dobError.classList.add('checked')
+                dobError.classList.remove('error')
+                dobError.textContent = '✓';
+            } else {
+                dob.classList.add('border', 'border-danger');
+                dob.classList.remove('border', 'border-success');
+                dobError.classList.add('error')
+
+                dobError.textContent = '❌';
+            }
+        });
+
+        // Event listener for Submit Button
+        form.addEventListener('submit', (event) => {
+            event.preventDefault(); // Prevent the default form submission behavior
+
+            // Check if the Full Name field is valid
+            if (fullName.value.length < 3 || !isAlpha(fullName.value)) {
+                fullNameError.textContent = 'Full name must be at least 3 characters long and contain only letters and spaces.';
+                return;
+            }
+
+             // Check if the Email field is valid
+            if (!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email.value))) {
+                emailError.textContent = 'Please enter a valid email address.';
+                return;
+            }
+
+            // Check if the Password field is valid
+            if (password.value.length < 8 || !/\d/.test(password.value) || !/[a-zA-Z]/.test(password.value)) {
+                passwordError.textContent = 'Password must be at least 8 characters long and contain a mix of letters and numbers.';
+                return;
+            }
+
+             // Check if the Confirm Password field matches the Password field
+            if (confirmPassword.value !== password.value) {
+                confirmPasswordError.textContent = 'Passwords do not match.';
+                return;
+            }
+            // Check if the Date of Birth field is valid and the user is at least 18 years old
+            if (!isValidDate(dob.value) || calculateAge(new Date(dob.value)) < 18) {
+                dobError.textContent = 'Please enter a valid date of birth in the format "YYYY-MM-DD". You must be at least 18 years old.';
+                return;
+            }
+            alert('Thank You! , You are now Registered');
+
+            // If all checks pass, submit the form
+            form.submit();
+        });
+    </script>
+</body>
+
+</html>
